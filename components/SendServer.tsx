@@ -1,5 +1,5 @@
 "use server";
 
-export async function sendToServer(valueToSend: Array<number>) {
+export async function sendToServer(valueToSend: number) {
   console.log(valueToSend);
 }
