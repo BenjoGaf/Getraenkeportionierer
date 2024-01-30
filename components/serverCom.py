@@ -1,13 +1,22 @@
+
 import sys
 import serial
+import time
 
-# Die Argumente des Child-Prozesses erhalten
 child_arguments = sys.argv[1:]
 
-# Die Argumente des Child-Prozesses anzeigen
-print("Argumente des Child-Prozesses:", child_arguments)
 
-ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=2)
+ser = serial.Serial('/dev/ttyUSB0', 9600)
+ser.timeout = 1
 
-ser.write(child_arguments)
+
+
+ser.write(test.encode())
+time.sleep(0.5)
+
+value = ser.readline().decode('ascii')
+
+# print(value)
+
+
 ser.close()
