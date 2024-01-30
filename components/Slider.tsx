@@ -13,6 +13,7 @@ const Slider = () => {
 
   const sendMixdrinks = async () => {
     const valueRightNow = sliderValue;
+    sendToServer(sliderValue);
   };
 
   return (
