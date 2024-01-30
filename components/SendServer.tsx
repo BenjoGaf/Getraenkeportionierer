@@ -3,7 +3,7 @@
 const { spawn } = require('child_process');
 
 // Pfad zum Python-Skript
-const pythonScript = 'components/com.py';
+const pythonScript = 'components/serverCom.py';
 
 // Argumente für das Python-Skript
 const args = ['arg1', 'arg2'];
