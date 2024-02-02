@@ -12,7 +12,6 @@ const args = ['arg1', 'arg2'];
 export async function sendToServer(valueToSend: number) {
   console.log(valueToSend);
 
-
   // Ein neuer Python-Prozess wird gestartet
   const pythonProcess = spawn('python', [pythonScript, ...args]);
 

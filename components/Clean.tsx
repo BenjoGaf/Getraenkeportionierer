@@ -37,7 +37,7 @@ const Clean = () => {
                   setCheckboxesVisible(!checkboxesVisible);
                 }}
               >
-                Pumpen auswählen
+                Pumpe auswählen
               </Button>
               {checkboxesVisible === true ? (
                 <ToggleGroup type="single" onValueChange={(value) => {}}>
