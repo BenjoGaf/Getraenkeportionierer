@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { useRouter } from "next/navigation";
 import { sendToServer } from "@/components/SendServer";
 import { sendStatusCode } from "next/dist/server/api-utils";
 
@@ -18,8 +19,9 @@ const Clean = () => {
     [1, 2, 3, 4, 5].map((i) => {
       i === checkBoxesValue ? (feld[i] = 100) : (feld[i] = 0);
     });
-    sendToServer(feld);
   };
+
+  const router = useRouter();
 
   return (
     <div className="flex flex-col flex-auto w-32 mx-5 p-15 border-black border-2 rounded-md p-10">
@@ -75,8 +77,8 @@ const Clean = () => {
             <Button variant="outline">add</Button>
           </div>
           <div className="pt-14">
-            <Button variant="outline">
-              Alle hinzugefügten Getränke anzeigen
+            <Button variant="outline" onClick={() => router.push("/getraenke")}>
+              Getränkeliste bearbeiten
             </Button>
           </div>
         </div>
