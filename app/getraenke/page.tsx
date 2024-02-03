@@ -3,17 +3,15 @@ const Drink = require("@/components/Drink");
 
 mongoose.connect("mongodb://localhost/getraenkeliste");
 
-run();
-
-async function run() {
-  const t1 = await Drink.create({ drinkName: "Pepsi", pumpe: 2 });
-  console.log(t1);
+async function newDrink(name: string) {
+  const newDrink = await Drink.create({ drinkName: name, pumpe: null });
+  console.log(newDrink);
 }
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col justify-around items-center justify-items-start p-12 h-screen">
-      <div></div>
+      <div>()</div>
     </main>
   );
 }
