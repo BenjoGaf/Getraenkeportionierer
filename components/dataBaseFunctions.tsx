@@ -1,4 +1,7 @@
+const mongoose = require("mongoose");
 const Drink = require("@/components/Drink");
+
+mongoose.connect("mongodb://localhost/getraenkeliste");
 
 export async function newDrink(name: string) {
   try {
@@ -21,4 +24,12 @@ export async function deleteDrink(name: string) {
   } catch (e: any) {
     console.log(e.message);
   }
+}
+
+async function returnAllDrinksAsync() {
+  return await Drink.find();
+}
+
+export default async function returnAllDrinks() {
+  return returnAllDrinksAsync();
 }
