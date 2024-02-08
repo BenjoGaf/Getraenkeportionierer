@@ -13,13 +13,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function valueChanged() {
-  console.log("pressed");
-}
-
-export default function DropdownMenuRadioGroupDemo({ pumpenZahl }) {
+export default function DropdownMenuRadioGroupDemo({ pumpenZahl, allDrinks }) {
+  allDrinks = JSON.parse(allDrinks);
   const [selectedDrink, setSelectedDrink] = React.useState("Cola");
-
+  function valueChanged() {
+    console.log(allDrinks);
+  }
   return (
     <div>
       Pumpe {pumpenZahl}:
@@ -35,9 +34,11 @@ export default function DropdownMenuRadioGroupDemo({ pumpenZahl }) {
             onValueChange={setSelectedDrink}
             onClick={valueChanged}
           >
-            <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
+            {allDrinks.map((drink) => (
+              <DropdownMenuRadioItem value={drink.drinkName}>
+                {drink.drinkName}
+              </DropdownMenuRadioItem>
+            ))}
           </DropdownMenuRadioGroup>
         </DropdownMenuContent>
       </DropdownMenu>

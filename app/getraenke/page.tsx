@@ -5,7 +5,7 @@ import DropdownMenuRadioGroupDemo from "@/components/SelectDrink";
 import returnAllDrinks from "@/components/dataBaseFunctions";
 
 // async function getDrinksString();
-let allDrinks = await returnAllDrinks();
+let allDrinks = JSON.stringify(await returnAllDrinks());
 
 export default function Home() {
   return (
@@ -15,8 +15,12 @@ export default function Home() {
       </div>
       {/* Inhalt */}
       <div className="flex flex-col w-full flex-wrap justify-between p-3 ">
-        <div className="flex flex-row p-5">
-          <DropdownMenuRadioGroupDemo pumpenZahl={1} />
+        <div className="flex flex-row p-5 justify-around">
+          <DropdownMenuRadioGroupDemo pumpenZahl={1} allDrinks={allDrinks} />
+          <DropdownMenuRadioGroupDemo pumpenZahl={2} allDrinks={allDrinks} />
+          <DropdownMenuRadioGroupDemo pumpenZahl={3} allDrinks={allDrinks} />
+          <DropdownMenuRadioGroupDemo pumpenZahl={4} allDrinks={allDrinks} />
+          <DropdownMenuRadioGroupDemo pumpenZahl={5} allDrinks={allDrinks} />
         </div>
       </div>
     </main>
