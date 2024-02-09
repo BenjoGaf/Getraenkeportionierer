@@ -14,16 +14,31 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { updatePumpe } from "@/components/dataBaseFunctions";
+import { error } from "console";
 
-export default function DropdownMenuRadioGroupDemo({ pumpenZahl, allDrinks }) {
-  allDrinks = JSON.parse(allDrinks);
+export default function DropdownMenuRadioGroupDemo({
+  pumpenZahl,
+  allDrinksGiven,
+}) {
+  allDrinksGiven = JSON.parse(allDrinksGiven);
   const [selectedDrink, setSelectedDrink] = React.useState("Cola");
+
+  const [allDrinks, setAllDrinks] = React.useState(allDrinksGiven);
 
   function valueChanged(drinkToUpdate, pumpeIndex) {
     allDrinks.map((drink) => {
       if (drink.drinkName === drinkToUpdate) drink.pumpe = pumpeIndex;
     });
+    setAllDrinks(allDrinks);
     console.log(allDrinks);
+  }
+
+  function getValuePump(): string {
+    let pumpDrink = "nothing";
+    allDrinks.map((drink) => {
+      if (drink.pumpe === pumpenZahl) pumpDrink = drink.drinkName;
+    });
+    return pumpDrink;
   }
 
   return (
@@ -32,17 +47,18 @@ export default function DropdownMenuRadioGroupDemo({ pumpenZahl, allDrinks }) {
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">{selectedDrink}</Button>
+            <Button variant="outline">{getValuePump()}</Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>Select Drink</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuRadioGroup
-              value={selectedDrink}
+              value={getValuePump()}
               onValueChange={setSelectedDrink}
             >
               {allDrinks.map((drink, index) => (
                 <DropdownMenuRadioItem
+                  key={index}
                   value={drink.drinkName}
                   onClick={() => {
                     valueChanged(drink.drinkName, pumpenZahl);

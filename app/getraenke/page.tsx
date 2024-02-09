@@ -19,11 +19,13 @@ export default function Home() {
       {/* Inhalt */}
       <div className="flex flex-col w-full flex-wrap justify-between p-3 ">
         <div className="flex flex-row p-5 justify-around">
-          <DropdownMenuRadioGroupDemo pumpenZahl={1} allDrinks={allDrinks} />
-          <DropdownMenuRadioGroupDemo pumpenZahl={2} allDrinks={allDrinks} />
-          <DropdownMenuRadioGroupDemo pumpenZahl={3} allDrinks={allDrinks} />
-          <DropdownMenuRadioGroupDemo pumpenZahl={4} allDrinks={allDrinks} />
-          <DropdownMenuRadioGroupDemo pumpenZahl={5} allDrinks={allDrinks} />
+          {[1, 2, 3, 4, 5].map((pumpe, index) => (
+            <DropdownMenuRadioGroupDemo
+              key={index}
+              pumpenZahl={index + 1}
+              allDrinksGiven={allDrinks}
+            />
+          ))}
         </div>
       </div>
       <Getrankeliste allDrinks={allDrinks} />
