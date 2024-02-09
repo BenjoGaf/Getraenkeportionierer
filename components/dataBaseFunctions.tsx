@@ -33,3 +33,13 @@ async function returnAllDrinksAsync() {
 export default async function returnAllDrinks() {
   return returnAllDrinksAsync();
 }
+
+export async function updatePumpe(nameToUpdate, pumpe) {
+  try {
+    const drink = Drink.find({ drinkname: nameToUpdate });
+    drink[0].pumpe = pumpe;
+    await drink[0].save();
+  } catch (e) {
+    console.log(e.message);
+  }
+}
