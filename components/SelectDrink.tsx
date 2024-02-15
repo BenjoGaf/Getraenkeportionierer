@@ -19,7 +19,6 @@ import { error } from "console";
 export default function DropdownMenuRadioGroupDemo({
   pumpenZahl,
   allDrinksGiven,
-  refreshDrinks,
 }) {
   allDrinksGiven = JSON.parse(allDrinksGiven);
 
@@ -61,7 +60,6 @@ export default function DropdownMenuRadioGroupDemo({
                   value={drink.drinkName}
                   onClick={() => {
                     valueChanged(drink.drinkName);
-                    refreshDrinks(drink.drinkName, pumpenZahl);
                   }}
                 >
                   {drink.drinkName}

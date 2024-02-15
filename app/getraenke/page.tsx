@@ -9,11 +9,6 @@ import Getrankeliste from "@/components/Getrankeliste";
 // async function getDrinksString();
 let allDrinks = JSON.stringify(await returnAllDrinks());
 
-async function refreshDrinks(name, pump) {
-  "use server";
-  console.log(name, pump);
-}
-
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col justify-around items-center justify-items-start p-12 h-screen">
@@ -30,7 +25,6 @@ export default function Home() {
               key={index}
               pumpenZahl={index + 1}
               allDrinksGiven={allDrinks}
-              refreshDrinks={refreshDrinks}
             />
           ))}
         </div>
