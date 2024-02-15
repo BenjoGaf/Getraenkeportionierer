@@ -30,7 +30,7 @@ async function returnAllDrinksAsync() {
   return await Drink.find();
 }
 
-export default async function returnAllDrinks() {
+export async function returnAllDrinks() {
   return returnAllDrinksAsync();
 }
 

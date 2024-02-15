@@ -2,11 +2,17 @@ import * as React from "react";
 
 import DropdownMenuRadioGroupDemo from "@/components/SelectDrink";
 
-import returnAllDrinks from "@/components/dataBaseFunctions";
+import { returnAllDrinks } from "@/components/dataBaseFunctions";
+import { updatePumpe } from "@/components/dataBaseFunctions";
 import Getrankeliste from "@/components/Getrankeliste";
 
 // async function getDrinksString();
 let allDrinks = JSON.stringify(await returnAllDrinks());
+
+async function refreshDrinks(name, pump) {
+  "use server";
+  console.log(name, pump);
+}
 
 export default function Home() {
   return (
@@ -24,6 +30,7 @@ export default function Home() {
               key={index}
               pumpenZahl={index + 1}
               allDrinksGiven={allDrinks}
+              refreshDrinks={refreshDrinks}
             />
           ))}
         </div>
