@@ -1,3 +1,5 @@
+"use server";
+
 const mongoose = require("mongoose");
 const Drink = require("@/components/Drink");
 
@@ -8,7 +10,7 @@ export async function newDrink(name: string) {
     const drink = await Drink.find({ drinkName: name });
     if (drink.length === 0) {
       console.log("Getränk existiert noch nicht");
-      await Drink.create({ drinkName: name, pumpe: null });
+      await Drink.create({ drinkName: name, pumpe: 0 });
       console.log("Getränk hinzugefügt");
     } else if (drink.length > 0) {
       console.log("Getränk existiert bereits");
@@ -26,18 +28,27 @@ export async function deleteDrink(name: string) {
   }
 }
 
-async function returnAllDrinksAsync() {
-  return await Drink.find();
-}
-
 export async function returnAllDrinks() {
-  return returnAllDrinksAsync();
+  return JSON.stringify(await Drink.find());
 }
 
-export async function updatePumpe(nameToUpdate, pumpe) {
+export async function returnSelectableDrinks() {
+  return JSON.stringify(await Drink.where("pumpe").gt(0));
+}
+
+export async function updatePumpe(nameToUpdate, pumpeToUpdate) {
   try {
-    const drink = Drink.find({ drinkname: nameToUpdate });
-    drink[0].pumpe = pumpe;
+    // delete Pumpe bei Drink vorher
+    const pumpDelete = await Drink.find({ pumpe: pumpeToUpdate });
+    if (pumpDelete.length >= 1) {
+      pumpDelete[0].pumpe = 0;
+      await pumpDelete[0].save();
+    }
+
+    // add Pumpe bei Drink jetzt
+    const drink = await Drink.find({ drinkName: nameToUpdate });
+    console.log(drink);
+    drink[0].pumpe = pumpeToUpdate;
     await drink[0].save();
   } catch (e) {
     console.log(e.message);

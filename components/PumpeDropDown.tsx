@@ -18,26 +18,20 @@ import { error } from "console";
 
 export default function DropdownMenuRadioGroupDemo({
   pumpenZahl,
-  allDrinksGiven,
+  allDrinks,
+  pumpChanged,
 }) {
-  allDrinksGiven = JSON.parse(allDrinksGiven);
-
-  const [allDrinks, setAllDrinks] = React.useState(allDrinksGiven);
-  const [selectedDrink, setSelectedDrink] = React.useState("nothing");
+  const [selectedDrink, setSelectedDrink] = React.useState("nichts");
 
   useEffect(() => {
+    let cnt = 0;
     allDrinks.map((drink) => {
       if (drink.pumpe === pumpenZahl) setSelectedDrink(drink.drinkName);
+      else cnt++;
     });
-  }, []);
-
-  function valueChanged(drinkToUpdate) {
-    allDrinksGiven.map((drink) => {
-      if (drink.drinkName === drinkToUpdate) drink.pumpe = pumpenZahl;
-    });
-    setAllDrinks(allDrinksGiven);
-    setSelectedDrink(drinkToUpdate);
-  }
+    if (cnt === allDrinks.length) setSelectedDrink("nichts");
+    console.log(pumpenZahl);
+  }, [allDrinks]);
 
   return (
     <div className="flex flex-col p-3">
@@ -59,7 +53,7 @@ export default function DropdownMenuRadioGroupDemo({
                   key={index}
                   value={drink.drinkName}
                   onClick={() => {
-                    valueChanged(drink.drinkName);
+                    pumpChanged(drink.drinkName, pumpenZahl);
                   }}
                 >
                   {drink.drinkName}

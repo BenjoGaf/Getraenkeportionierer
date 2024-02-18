@@ -6,6 +6,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useRouter } from "next/navigation";
 import { sendToServer } from "@/components/SendServer";
 import { sendStatusCode } from "next/dist/server/api-utils";
+import { InputForm, InputWithButton } from "./FormAddDrink";
 
 const Clean = () => {
   const [checkboxesVisible, setCheckboxesVisible] = useState(false);
@@ -70,15 +71,10 @@ const Clean = () => {
         </div>
         <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
         <div className="flex flex-col w-full p-5">
-          <div className="flex flex-row w-full justify-between align-middle">
-            <div className="flex h-full">
-              <Input placeholder="Getränk hinzufügen" className="self-center" />
-            </div>
-            <Button variant="outline">add</Button>
-          </div>
+          <InputWithButton />
           <div className="pt-14">
             <Button variant="outline" onClick={() => router.push("/getraenke")}>
-              Getränkeliste bearbeiten
+              Pumpen konfigurieren
             </Button>
           </div>
         </div>

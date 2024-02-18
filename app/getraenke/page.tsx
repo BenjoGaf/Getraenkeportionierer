@@ -1,35 +1,50 @@
-import * as React from "react";
+"use client";
 
-import DropdownMenuRadioGroupDemo from "@/components/SelectDrink";
+import React, { useState } from "react";
 
 import { returnAllDrinks } from "@/components/dataBaseFunctions";
-import { updatePumpe } from "@/components/dataBaseFunctions";
 import Getrankeliste from "@/components/Getrankeliste";
-
-// async function getDrinksString();
-let allDrinks = JSON.stringify(await returnAllDrinks());
+import { useRouter } from "next/navigation";
+import DropDownMenus from "@/components/PumpenDropDownMenus";
+import { Button } from "@/components/ui/button";
+import DeleteDropDownMenu from "@/components/DeleteDropDownMenu";
 
 export default function Home() {
+  const [allDrinks, setAllDrinks] = useState([]);
+
+  const router = useRouter();
+
+  const fetchDrinks = async () => {
+    setAllDrinks(JSON.parse(await returnAllDrinks()));
+  };
+
   return (
     <main className="flex min-h-screen flex-col justify-around items-center justify-items-start p-12 h-screen">
-      <div className="flex flex-col p-3 ">
+      <div className="flex flex-row p-3">
         <div className="font-sans text-4xl pb-3 text-center">
           Getränke bearbeiten
+        </div>
+        {/* Button zurück */}
+        <div className="pl-80">
+          <Button variant="outline" onClick={() => router.push("/")}>
+            Zurück
+          </Button>
         </div>
       </div>
       {/* Inhalt */}
       <div className="flex flex-col w-full flex-wrap justify-between p-3 ">
         <div className="flex flex-row p-5 justify-around">
-          {[1, 2, 3, 4, 5].map((pumpe, index) => (
-            <DropdownMenuRadioGroupDemo
-              key={index}
-              pumpenZahl={index + 1}
-              allDrinksGiven={allDrinks}
-            />
-          ))}
+          <DropDownMenus
+            allDrinks={allDrinks}
+            setAllDrinks={setAllDrinks}
+            fetchDrinks={fetchDrinks}
+          />
         </div>
       </div>
-      <Getrankeliste allDrinks={allDrinks} />
+      <div className="flex flex-row flex-wrap justify-around w-full px-32">
+        <Getrankeliste allDrinks={allDrinks} />
+        <DeleteDropDownMenu allDrinks={allDrinks} />
+      </div>
     </main>
   );
 }

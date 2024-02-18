@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Getränkeautomat",
-  description: "Diplomarbeit fürs Getränkemischen",
+  description: "Website um den Getränkeportionierer anzusteuern",
 };
 
 export default function RootLayout({

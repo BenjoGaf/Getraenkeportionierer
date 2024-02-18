@@ -1,17 +1,30 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { sendToServer } from "@/components/SendServer";
+import SelectDrinkDropDownMenu from "./SelectDrinkDropDownMenu";
+import { returnAllDrinks, returnSelectableDrinks } from "./dataBaseFunctions";
 
 const Slider = () => {
   const [sliderValue, setSliderValue] = useState(50);
+  const [selectableDrinks, setSelectableDrinks] = useState([]);
+  const [selectedDrink1, setSelectedDrink1] = useState("auswählen");
+  const [selectedDrink2, setSelectedDrink2] = useState("auswählen");
+
+  useEffect(() => {
+    fetchDrinks();
+  }, []);
+
+  const fetchDrinks = async () => {
+    setSelectableDrinks(JSON.parse(await returnSelectableDrinks()));
+  };
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSliderValue(parseInt(e.target.value, 10));
   };
 
-  const sendMixdrinks = async () => {
+  const sendMixdrinks = () => {
     const valueRightNow = sliderValue;
     sendToServer(sliderValue);
   };
@@ -43,10 +56,26 @@ const Slider = () => {
       </div>
 
       <div className="flex flex-row w-full justify-around">
-        <p>Getränk 1: {sliderValue}%</p>
-        <p>Getränk 2: {100 - sliderValue}%</p>
+        <div className="flex flex-row align-middle justify-center ">
+          <SelectDrinkDropDownMenu
+            selectableDrinks={selectableDrinks}
+            selectedDrink={selectedDrink1}
+            setSelectedDrink={setSelectedDrink1}
+          />
+          <span className="h-full text-center pl-4 pt-2">{sliderValue}%</span>
+        </div>
+        <div className="flex flex-row align-middle justify-center ">
+          <SelectDrinkDropDownMenu
+            selectableDrinks={selectableDrinks}
+            selectedDrink={selectedDrink2}
+            setSelectedDrink={setSelectedDrink2}
+          />
+          <span className="h-full text-center pl-4 pt-2">
+            {100 - sliderValue}%
+          </span>
+        </div>
       </div>
-      <div>
+      <div className="p-20">
         <Button variant="outline" onClick={sendMixdrinks} className="  mt-4">
           Mischen
         </Button>
