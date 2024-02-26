@@ -6,7 +6,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col justify-around items-center justify-items-start p-12 h-screen">
       {/* Überschrift und Copyright */}
       <div className="flex flex-col p-3 ">
-        <div className="font-sans text-4xl pb-3 text-center">
+        <div className="font-sans text-4xl pb-3 text-black text-center">
           Getränkeautomat
         </div>
         <div className="font-sans text-m text-justify">

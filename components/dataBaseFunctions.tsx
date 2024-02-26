@@ -12,8 +12,10 @@ export async function newDrink(name: string) {
       console.log("Getränk existiert noch nicht");
       await Drink.create({ drinkName: name, pumpe: 0 });
       console.log("Getränk hinzugefügt");
+      return true;
     } else if (drink.length > 0) {
       console.log("Getränk existiert bereits");
+      return false;
     }
   } catch (e: any) {
     console.log(e.message);
@@ -47,7 +49,6 @@ export async function updatePumpe(nameToUpdate, pumpeToUpdate) {
 
     // add Pumpe bei Drink jetzt
     const drink = await Drink.find({ drinkName: nameToUpdate });
-    console.log(drink);
     drink[0].pumpe = pumpeToUpdate;
     await drink[0].save();
   } catch (e) {

@@ -17,16 +17,22 @@ import { deleteDrink } from "./dataBaseFunctions";
 
 export default function DeleteDropDownMenu({ allDrinks }) {
   const [selectedDrink, setSelectedDrink] = useState("auswählen");
+  const [showDrinkDeletedText, setShowDrinkDeletedText] = useState(false);
 
   const deletePressed = () => {
     if (selectedDrink != "auswählen") deleteDrink(selectedDrink);
+    setSelectedDrink("auswählen");
+    setShowDrinkDeletedText(true);
+    setTimeout(() => {
+      setShowDrinkDeletedText(false);
+    }, 3000);
   };
 
   return (
     <div className="flex flex-col w-1/2">
       <div className="p-2">Getränk aus der Liste entfernen:</div>
       <div className="flex flex-row w-full">
-        <div className="flex flex-col p-3 pr-20">
+        <div className="p-3 pr-20">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">{selectedDrink}</Button>
@@ -53,6 +59,11 @@ export default function DeleteDropDownMenu({ allDrinks }) {
           </Button>
         </div>
       </div>
+      {showDrinkDeletedText && (
+        <div className="p-3 text-red-500">
+          <p>Drink wurde aus der Liste entfernt!</p>
+        </div>
+      )}
     </div>
   );
 }
