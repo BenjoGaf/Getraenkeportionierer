@@ -10,6 +10,22 @@ const args = ['arg1', 'arg2'];
 
 
 export async function sendToServer(valueToSend: number) {
+
+  console.log("bla")
+  const { spawn } = require('child_process');
+  let answer = []; // Store readings
+  
+  const talkToArduino = spawn('python', ['/home/benja/Documents/diplo/Getraenkeportionierer/components/serverCom.py']);
+  talkToArduino.stdout.on('data', function(data) {
+  
+      // Coerce Buffer object to Float
+      answer.push(String(data))
+
+      // Log to debug
+      console.log(answer);
+  });
+
+  /*
   console.log(valueToSend);
 
   // Ein neuer Python-Prozess wird gestartet
@@ -26,5 +42,5 @@ export async function sendToServer(valueToSend: number) {
 
   pythonProcess.on('close', (code: Error | null) => {
     console.log(`Python-Prozess wurde mit dem Code ${code} beendet`);
-  });
+  }); */
 }
