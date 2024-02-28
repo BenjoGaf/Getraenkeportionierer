@@ -3,13 +3,13 @@ import Mixdrink from "@/components/Mixdrink";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col justify-around items-center justify-items-start p-12 h-screen">
+    <main className="flex flex-col items-center justify-items-start lg:p-12 md:p-8 p-2 pt-8 h-screen min-h-min">
       {/* Überschrift und Copyright */}
-      <div className="flex flex-col p-3 ">
-        <div className="font-sans text-4xl pb-3 text-black text-center">
+      <div className="flex flex-col p-3 md:pb-16 pb-10">
+        <div className="font-sans text-5xl pb-3 text-black text-center">
           Getränkeautomat
         </div>
-        <div className="font-sans text-m text-justify">
+        <div className="font-sans text-m text-justify px-6">
           eine Diplomarbeit von Elias Bieler, Benjamin Gangol und Alexander
           Kollar
         </div>
@@ -18,7 +18,7 @@ export default function Home() {
         </div>
       </div>
       {/* Inhalt */}
-      <div className="flex flex-row w-full flex-wrap justify-between p-3 ">
+      <div className="flex md:flex-row w-full flex-col justify-between p-3 ">
         <Mixdrink />
         <Clean />
       </div>

@@ -1,28 +1,25 @@
 "use server";
 
-const { spawn } = require('child_process');
-
 // Pfad zum Python-Skript
-const pythonScript = 'components/serverCom.py';
+const pythonScriptPathRaspi =
+  "/home/benja/Documents/diplo/Getraenkeportionierer/components/serverCom.py";
+
+const pythonScriptPathWin = ["components/serverCom.py", "Hello from JS"];
 
 // Argumente für das Python-Skript
-const args = ['arg1', 'arg2'];
-
 
 export async function sendToServer(valueToSend: number) {
-
-  console.log("bla")
-  const { spawn } = require('child_process');
+  console.log("bla");
+  const { spawn } = require("child_process");
   let answer = []; // Store readings
-  
-  const talkToArduino = spawn('python', ['/home/benja/Documents/diplo/Getraenkeportionierer/components/serverCom.py']);
-  talkToArduino.stdout.on('data', function(data) {
-  
-      // Coerce Buffer object to Float
-      answer.push(String(data))
 
-      // Log to debug
-      console.log(answer);
+  const talkToArduino = spawn("python", pythonScriptPathWin);
+  talkToArduino.stdout.on("data", function (data) {
+    // Coerce Buffer object to Float
+    answer.push(String(data));
+
+    // Log to debug
+    console.log(answer);
   });
 
   /*

@@ -6,7 +6,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useRouter } from "next/navigation";
 import { sendToServer } from "@/components/SendServer";
 import { sendStatusCode } from "next/dist/server/api-utils";
-import { InputWithButton } from "./FormAddDrink";
+import { InputWithButton } from "./InputWithButton";
 
 const Clean = () => {
   const [checkboxesVisible, setCheckboxesVisible] = useState(false);
@@ -25,17 +25,18 @@ const Clean = () => {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col flex-auto w-32 mx-5 p-15 border-black border-2 rounded-md p-10">
-      <div className="flex justify-center w-full border-2 border-black rounded-lg p-4 mb-8">
-        <h1 className="w-42 text-2xl">Automat reinigen</h1>
+    <div className="flex flex-col flex-auto md:mx-5 lg:w-1/3 xl:p-10 p-2 border-neutral-600 border-2 rounded-md">
+      <div className="flex justify-center py-4 mb-4">
+        <h1 className="lg:text-3xl text-2xl">Automat reinigen</h1>
       </div>
+      <hr className="h-px mb-6 bg-neutral-600 border-0 dark:bg-gray-700"></hr>
       <div className="flex flex-col w-full">
         <div className="flex flex-col w-full">
-          <div className="flex flex-row justify-between p-5">
-            <div className="flex flex-col h-24">
+          <div className="flex flex-row justify-between xl:p-5">
+            <div className="flex flex-col">
               <Button
                 variant="outline"
-                className="mb-8 w-48"
+                className="w-48"
                 onClick={() => {
                   setCheckboxesVisible(!checkboxesVisible);
                 }}
