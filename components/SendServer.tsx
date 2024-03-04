@@ -9,7 +9,6 @@ const pythonScriptPathWin = ["components/serverCom.py", "Hello from JS"];
 // Argumente für das Python-Skript
 
 export async function sendToServer(valueToSend: number) {
-  console.log("bla");
   const { spawn } = require("child_process");
   let answer = []; // Store readings
 
@@ -20,6 +19,10 @@ export async function sendToServer(valueToSend: number) {
 
     // Log to debug
     console.log(answer);
+  });
+
+  talkToArduino.stderr.on("data", (data: string) => {
+    console.error(`stderr: ${data}`);
   });
 
   /*

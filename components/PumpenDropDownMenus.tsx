@@ -6,7 +6,7 @@ import { updatePumpe } from "./dataBaseFunctions";
 
 export default function DropDownMenus({
   allDrinks,
-  updatePumpen,
+  updatePumpenLocal,
   fetchDrinks,
 }) {
   useEffect(() => {
@@ -14,9 +14,10 @@ export default function DropDownMenus({
   }, []);
 
   const pumpChanged = (drinkToUpdate, pumpeToUpdate) => {
-    updatePumpen(drinkToUpdate, pumpeToUpdate);
+    // updatePumpenLocal(drinkToUpdate, pumpeToUpdate);
 
     updatePumpe(drinkToUpdate, pumpeToUpdate);
+    fetchDrinks();
   };
 
   return (

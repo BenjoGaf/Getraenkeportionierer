@@ -21,13 +21,14 @@ export default function Home() {
     setAllDrinks(JSON.parse(await returnAllDrinks()));
   };
 
-  const updatePumpen = (drinkToUpdate, pumpeToUpdate) => {
+  const updatePumpen = async (drinkToUpdate, pumpeToUpdate) => {
     let allDrinksChanged = allDrinks;
 
     allDrinksChanged.map((drink) => {
       if (drink.pumpe === pumpeToUpdate) drink.pumpe = 0;
       if (drink.drinkName === drinkToUpdate) drink.pumpe = pumpeToUpdate;
     });
+    console.log(allDrinksChanged);
 
     setAllDrinks(allDrinksChanged);
   };
@@ -50,7 +51,7 @@ export default function Home() {
         <div className="flex flex-row p-5 justify-around">
           <DropDownMenus
             allDrinks={allDrinks}
-            updatePumpen={updatePumpen}
+            updatePumpenLocal={updatePumpen}
             fetchDrinks={fetchDrinks}
           />
         </div>

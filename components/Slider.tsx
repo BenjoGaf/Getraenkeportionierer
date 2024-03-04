@@ -25,8 +25,9 @@ const Slider = () => {
   };
 
   const sendMixdrinks = () => {
+    console.log(selectableDrinks);
     const valueRightNow = sliderValue;
-    sendToServer(sliderValue);
+    if (selectedDrink1) sendToServer(sliderValue);
   };
 
   return (
@@ -41,6 +42,7 @@ const Slider = () => {
           value={sliderValue}
           min="0"
           max="100"
+          step="5"
           onChange={handleSliderChange}
           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
         />
@@ -56,23 +58,24 @@ const Slider = () => {
       </div>
 
       <div className="flex flex-row w-full justify-around">
-        <div className="flex flex-row align-middle justify-center ">
+        <div className="flex flex-col align-middle justify-center ">
+          <span className="h-full text-center pl-4 pt-2">{sliderValue}%</span>
           <SelectDrinkDropDownMenu
             selectableDrinks={selectableDrinks}
             selectedDrink={selectedDrink1}
             setSelectedDrink={setSelectedDrink1}
           />
-          <span className="h-full text-center pl-4 pt-2">{sliderValue}%</span>
         </div>
-        <div className="flex flex-row align-middle justify-center ">
+
+        <div className="flex flex-col align-middle justify-center ">
+          <span className="h-full text-center pl-4 pt-2">
+            {100 - sliderValue}%
+          </span>
           <SelectDrinkDropDownMenu
             selectableDrinks={selectableDrinks}
             selectedDrink={selectedDrink2}
             setSelectedDrink={setSelectedDrink2}
           />
-          <span className="h-full text-center pl-4 pt-2">
-            {100 - sliderValue}%
-          </span>
         </div>
       </div>
       <div className="p-20">
