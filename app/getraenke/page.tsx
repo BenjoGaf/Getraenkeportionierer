@@ -12,10 +12,24 @@ import DeleteDropDownMenu from "@/components/DeleteDropDownMenu";
 export default function Home() {
   const [allDrinks, setAllDrinks] = useState([]);
 
+  const [, updateState] = React.useState();
+  const forceUpdate: () => void = React.useState({})[1].bind(null, {}); // see NOTE belo
+
   const router = useRouter();
 
   const fetchDrinks = async () => {
     setAllDrinks(JSON.parse(await returnAllDrinks()));
+  };
+
+  const updatePumpen = (drinkToUpdate, pumpeToUpdate) => {
+    let allDrinksChanged = allDrinks;
+
+    allDrinksChanged.map((drink) => {
+      if (drink.pumpe === pumpeToUpdate) drink.pumpe = 0;
+      if (drink.drinkName === drinkToUpdate) drink.pumpe = pumpeToUpdate;
+    });
+
+    setAllDrinks(allDrinksChanged);
   };
 
   return (
@@ -36,14 +50,14 @@ export default function Home() {
         <div className="flex flex-row p-5 justify-around">
           <DropDownMenus
             allDrinks={allDrinks}
-            setAllDrinks={setAllDrinks}
+            updatePumpen={updatePumpen}
             fetchDrinks={fetchDrinks}
           />
         </div>
       </div>
       <div className="flex flex-row flex-wrap justify-around w-full px-32">
         <Getrankeliste allDrinks={allDrinks} />
-        <DeleteDropDownMenu allDrinks={allDrinks} />
+        <DeleteDropDownMenu allDrinks={allDrinks} fetchDrinks={fetchDrinks} />
       </div>
     </main>
   );

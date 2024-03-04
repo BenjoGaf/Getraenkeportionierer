@@ -15,12 +15,15 @@ import {
 import { useState } from "react";
 import { deleteDrink } from "./dataBaseFunctions";
 
-export default function DeleteDropDownMenu({ allDrinks }) {
+export default function DeleteDropDownMenu({ allDrinks, fetchDrinks }) {
   const [selectedDrink, setSelectedDrink] = useState("auswählen");
   const [showDrinkDeletedText, setShowDrinkDeletedText] = useState(false);
 
   const deletePressed = () => {
     if (selectedDrink != "auswählen") deleteDrink(selectedDrink);
+
+    fetchDrinks();
+
     setSelectedDrink("auswählen");
     setShowDrinkDeletedText(true);
     setTimeout(() => {
