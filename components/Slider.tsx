@@ -5,12 +5,15 @@ import { Button } from "@/components/ui/button";
 import { sendToServer } from "@/components/SendServer";
 import SelectDrinkDropDownMenu from "./SelectDrinkDropDownMenu";
 import { returnAllDrinks, returnSelectableDrinks } from "./dataBaseFunctions";
+import { error } from "console";
 
 const Slider = () => {
   const [sliderValue, setSliderValue] = useState(50);
   const [selectableDrinks, setSelectableDrinks] = useState([]);
   const [selectedDrink1, setSelectedDrink1] = useState("auswählen");
   const [selectedDrink2, setSelectedDrink2] = useState("auswählen");
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     fetchDrinks();
@@ -20,6 +23,14 @@ const Slider = () => {
     setSelectableDrinks(JSON.parse(await returnSelectableDrinks()));
   };
 
+  const errorMixingDrink = (errorGiven) => {
+    setErrorMessage(errorGiven);
+    setShowErrorMessage(true);
+    setTimeout(() => {
+      setShowErrorMessage(false);
+    }, 3000);
+  };
+
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSliderValue(parseInt(e.target.value, 10));
   };
@@ -27,7 +38,54 @@ const Slider = () => {
   const sendMixdrinks = () => {
     console.log(selectableDrinks);
     const valueRightNow = sliderValue;
-    if (selectedDrink1) sendToServer(sliderValue);
+
+    let pumpSelectedDrink1: number = 0;
+    let pumpSelectedDrink2: number = 0;
+
+    if (selectedDrink1 !== "auswählen") {
+      selectableDrinks.map((drink) => {
+        if (drink.drinkName === selectedDrink1) {
+          pumpSelectedDrink1 = drink.pumpe;
+        }
+      });
+    } else if (selectedDrink1 === "auswählen") pumpSelectedDrink1 = 0;
+
+    if (selectedDrink2 !== "auswählen") {
+      selectableDrinks.map((drink, index) => {
+        if (drink.drinkName === selectedDrink2)
+          pumpSelectedDrink2 = drink.pumpe;
+      });
+    } else if (selectedDrink2 === "auswählen") pumpSelectedDrink2 = 0;
+
+    if (pumpSelectedDrink1 === 0 && pumpSelectedDrink2 === 0) {
+      errorMixingDrink("Kein Getränk ausgewählt");
+    }
+
+    // only first Drink selected
+    if (pumpSelectedDrink1 !== 0 && pumpSelectedDrink2 === 0) {
+      console.log("inIf1");
+      if (valueRightNow === 100) {
+        let mixRatio = "100," + pumpSelectedDrink1 + ",0";
+        sendToServer(mixRatio);
+      } else errorMixingDrink("Getränk2 nicht ausgewählt");
+    }
+
+    // only second Drink selected
+    if (pumpSelectedDrink1 === 0 && pumpSelectedDrink2 !== 0) {
+      console.log("inIf2");
+      if (valueRightNow === 0) {
+        let mixRatio = "100," + pumpSelectedDrink2 + ",0";
+        sendToServer(mixRatio);
+      } else errorMixingDrink("Getränk1 nicht ausgewählt");
+    }
+
+    // both Selected
+    if (pumpSelectedDrink1 !== 0 && pumpSelectedDrink2 !== 0) {
+      console.log("inIf3");
+      let mixRatio =
+        valueRightNow + "," + pumpSelectedDrink1 + "," + pumpSelectedDrink2;
+      sendToServer(mixRatio);
+    }
   };
 
   return (
@@ -78,8 +136,16 @@ const Slider = () => {
           />
         </div>
       </div>
-      <div className="p-20">
-        <Button variant="outline" onClick={sendMixdrinks} className="  mt-4">
+      <div className="h-20 p-8 ml-4">
+        {showErrorMessage && (
+          <div className="text-red-500">
+            <p>{errorMessage}</p>
+          </div>
+        )}
+      </div>
+
+      <div className="p-10">
+        <Button variant="outline" onClick={sendMixdrinks} className="  mt-2">
           Mischen
         </Button>
       </div>

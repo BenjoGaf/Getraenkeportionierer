@@ -12,9 +12,6 @@ import DeleteDropDownMenu from "@/components/DeleteDropDownMenu";
 export default function Home() {
   const [allDrinks, setAllDrinks] = useState([]);
 
-  const [, updateState] = React.useState();
-  const forceUpdate: () => void = React.useState({})[1].bind(null, {}); // see NOTE belo
-
   const router = useRouter();
 
   const fetchDrinks = async () => {

@@ -12,4 +12,4 @@ arguments = sys.argv[1]
 #line = ser.readline().decode('utf-8').rstrip()
 
 
-print("arguments", flush=True, end='')
+print(arguments, flush=True, end='')

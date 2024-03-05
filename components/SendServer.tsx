@@ -4,11 +4,12 @@
 const pythonScriptPathRaspi =
   "/home/benja/Documents/diplo/Getraenkeportionierer/components/serverCom.py";
 
-const pythonScriptPathWin = ["components/serverCom.py", "Hello from JS"];
-
 // Argumente für das Python-Skript
 
-export async function sendToServer(valueToSend: number) {
+export async function sendToServer(valueToSend: string) {
+  const pythonScriptPathWin = ["components/serverCom.py", valueToSend];
+  console.log(valueToSend);
+
   const { spawn } = require("child_process");
   let answer = []; // Store readings
 
