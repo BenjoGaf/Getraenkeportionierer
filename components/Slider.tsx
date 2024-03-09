@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { sendToServer } from "@/components/SendServer";
 import SelectDrinkDropDownMenu from "./SelectDrinkDropDownMenu";
 import { returnAllDrinks, returnSelectableDrinks } from "./dataBaseFunctions";
-import { error } from "console";
+import PreConfiguredDrink from "./preConfiguredDrink";
 
 const Slider = () => {
   const [sliderValue, setSliderValue] = useState(50);
@@ -14,6 +14,21 @@ const Slider = () => {
   const [selectedDrink2, setSelectedDrink2] = useState("auswählen");
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  // const preConfiguredDrinks = [
+  //   {
+  //     drinkName: "Bacardi Cola",
+  //     drinks: ["Cola", "Bacardi"],
+  //   },
+  //   {
+  //     drinkName: "Spezi",
+  //     drinks: ["Cola", "Fanta"],
+  //   },
+  //   {
+  //     drinkName: "Vodka Orange",
+  //     drinks: ["Vodka", "Orangensaft"],
+  //   },
+  // ];
 
   useEffect(() => {
     fetchDrinks();
@@ -144,8 +159,14 @@ const Slider = () => {
         )}
       </div>
 
-      <div className="p-10">
-        <Button variant="outline" onClick={sendMixdrinks} className="  mt-2">
+      <div className="flex flex-row p-10">
+        <PreConfiguredDrink
+          setSelectedDrink1={setSelectedDrink1}
+          setSelectedDrink2={setSelectedDrink2}
+          setSliderValue={setSliderValue}
+        />
+
+        <Button variant="outline" onClick={sendMixdrinks} className="mt-2">
           Mischen
         </Button>
       </div>
