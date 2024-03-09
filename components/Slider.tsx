@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { sendToServer } from "@/components/SendServer";
 import SelectDrinkDropDownMenu from "./SelectDrinkDropDownMenu";
 import { returnAllDrinks, returnSelectableDrinks } from "./dataBaseFunctions";
-import PreConfiguredDrink from "./preConfiguredDrink";
+import PreConfiguredDrink from "./PreConfiguredDrink";
 
 const Slider = () => {
   const [sliderValue, setSliderValue] = useState(50);
@@ -103,6 +103,85 @@ const Slider = () => {
     }
   };
 
+  const buttonPressed = (index) => {
+    switch (index) {
+      case 1: {
+        let drink1 = "Cola";
+        let drink2 = "Fanta";
+        let isAvailable = 0;
+        selectableDrinks.map((drink) => {
+          if (drink.drinkName === drink1) isAvailable++;
+          if (drink.drinkName === drink2) isAvailable++;
+        });
+        if (isAvailable === 2) {
+          setSelectedDrink1(drink1);
+          setSelectedDrink2(drink2);
+          setSliderValue(50);
+        }
+      }
+
+      case 2: {
+        let drink1 = "Bacardi";
+        let drink2 = "Cola";
+        let isAvailable = 0;
+        selectableDrinks.map((drink) => {
+          if (drink.drinkName === drink1) isAvailable++;
+          if (drink.drinkName === drink2) isAvailable++;
+        });
+        if (isAvailable === 2) {
+          setSelectedDrink1(drink1);
+          setSelectedDrink2(drink2);
+          setSliderValue(30);
+        }
+      }
+
+      case 3: {
+        let drink1 = "Vodka";
+        let drink2 = "Orangensaft";
+        let isAvailable = 0;
+        selectableDrinks.map((drink) => {
+          if (drink.drinkName === drink1) isAvailable++;
+          if (drink.drinkName === drink2) isAvailable++;
+        });
+        if (isAvailable === 2) {
+          setSelectedDrink1(drink1);
+          setSelectedDrink2(drink2);
+          setSliderValue(30);
+        }
+      }
+
+      case 4: {
+        let drink1 = "Gin";
+        let drink2 = "Tonic";
+        let isAvailable = 0;
+        selectableDrinks.map((drink) => {
+          if (drink.drinkName === drink1) isAvailable++;
+          if (drink.drinkName === drink2) isAvailable++;
+        });
+        if (isAvailable === 2) {
+          setSelectedDrink1(drink1);
+          setSelectedDrink2(drink2);
+          setSliderValue(30);
+        }
+      }
+
+      case 5: {
+        let drink1 = "Wein";
+        let drink2 = "Wasser";
+        let isAvailable = 0;
+        selectableDrinks.map((drink) => {
+          if (drink.drinkName === drink1) isAvailable++;
+          if (drink.drinkName === drink2) isAvailable++;
+        });
+        if (isAvailable === 2) {
+          setSelectedDrink1(drink1);
+          setSelectedDrink2(drink2);
+          setSliderValue(50);
+        }
+      }
+    }
+  };
+
   return (
     <div>
       <div className="relative mb-6">
@@ -160,11 +239,16 @@ const Slider = () => {
       </div>
 
       <div className="flex flex-row p-10">
-        <PreConfiguredDrink
-          setSelectedDrink1={setSelectedDrink1}
-          setSelectedDrink2={setSelectedDrink2}
-          setSliderValue={setSliderValue}
-        />
+        {["Spezi", "BacardiCola", "VodkaOrange", "GinTonic", "Spritzer"].map(
+          (preDrink, index) => (
+            <PreConfiguredDrink
+              key={index}
+              index={index + 1}
+              preDrink={preDrink}
+              buttonPressed={buttonPressed}
+            />
+          )
+        )}
 
         <Button variant="outline" onClick={sendMixdrinks} className="mt-2">
           Mischen

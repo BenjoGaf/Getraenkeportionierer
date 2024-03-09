@@ -1,14 +1,12 @@
 import React from "react";
 import { Button } from "./ui/button";
 
-const PreConfiguredDrink = (
-  setSelectedDrink1,
-  setSelectedDrink2,
-  setSliderValue
-) => {
+const PreConfiguredDrink = ({ index, preDrink, buttonPressed }) => {
   return (
     <div>
-      <Button />
+      <Button variant="outline" onClick={buttonPressed(index)} className="m-2">
+        {preDrink}
+      </Button>
     </div>
   );
 };
