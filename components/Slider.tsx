@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { sendToServer } from "@/components/SendServer";
 import SelectDrinkDropDownMenu from "./SelectDrinkDropDownMenu";
 import { returnAllDrinks, returnSelectableDrinks } from "./dataBaseFunctions";
-import PreConfiguredDrink from "./PreConfiguredDrink";
 
 const Slider = () => {
   const [sliderValue, setSliderValue] = useState(50);
@@ -14,6 +13,9 @@ const Slider = () => {
   const [selectedDrink2, setSelectedDrink2] = useState("auswählen");
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showConfiguredDrinksMessage, setShowConfiguredDrinksMessage] =
+    useState(false);
+  const [confDrinkMessage, setConfDrinkMessage] = useState("");
 
   // const preConfiguredDrinks = [
   //   {
@@ -43,6 +45,14 @@ const Slider = () => {
     setShowErrorMessage(true);
     setTimeout(() => {
       setShowErrorMessage(false);
+    }, 3000);
+  };
+
+  const configuredMessage = (message) => {
+    setConfDrinkMessage(message);
+    setShowConfiguredDrinksMessage(true);
+    setTimeout(() => {
+      setShowConfiguredDrinksMessage(false);
     }, 3000);
   };
 
@@ -117,7 +127,8 @@ const Slider = () => {
           setSelectedDrink1(drink1);
           setSelectedDrink2(drink2);
           setSliderValue(50);
-        }
+        } else configuredMessage("Getränke sind nicht im Automat");
+        break;
       }
 
       case 2: {
@@ -132,7 +143,8 @@ const Slider = () => {
           setSelectedDrink1(drink1);
           setSelectedDrink2(drink2);
           setSliderValue(30);
-        }
+        } else configuredMessage("Getränke sind nicht im Automat");
+        break;
       }
 
       case 3: {
@@ -147,7 +159,8 @@ const Slider = () => {
           setSelectedDrink1(drink1);
           setSelectedDrink2(drink2);
           setSliderValue(30);
-        }
+        } else configuredMessage("Getränke sind nicht im Automat");
+        break;
       }
 
       case 4: {
@@ -162,7 +175,8 @@ const Slider = () => {
           setSelectedDrink1(drink1);
           setSelectedDrink2(drink2);
           setSliderValue(30);
-        }
+        } else configuredMessage("Getränke sind nicht im Automat");
+        break;
       }
 
       case 5: {
@@ -177,7 +191,8 @@ const Slider = () => {
           setSelectedDrink1(drink1);
           setSelectedDrink2(drink2);
           setSliderValue(50);
-        }
+        } else configuredMessage("Getränke sind nicht im Automat");
+        break;
       }
     }
   };
@@ -241,12 +256,14 @@ const Slider = () => {
       <div className="flex flex-row p-10">
         {["Spezi", "BacardiCola", "VodkaOrange", "GinTonic", "Spritzer"].map(
           (preDrink, index) => (
-            <PreConfiguredDrink
+            <Button
               key={index}
-              index={index + 1}
-              preDrink={preDrink}
-              buttonPressed={buttonPressed}
-            />
+              variant="outline"
+              onClick={() => buttonPressed(index + 1)}
+              className="m-2"
+            >
+              {preDrink}
+            </Button>
           )
         )}
 
@@ -254,6 +271,11 @@ const Slider = () => {
           Mischen
         </Button>
       </div>
+      {showConfiguredDrinksMessage && (
+        <div className="text-red-500">
+          <p>{confDrinkMessage}</p>
+        </div>
+      )}
     </div>
   );
 };
