@@ -1,5 +1,5 @@
 import React from "react";
-import Mischverhaltnis from "./Mischverhaltnis";
+import Slider from "./Slider";
 
 const Mixdrink = () => {
   return (
@@ -9,7 +9,7 @@ const Mixdrink = () => {
       </div>
       <hr className="h-px mb-12 bg-neutral-600 border-0 dark:bg-gray-700"></hr>
       <div className="flex flex-col h-full">
-        <Mischverhaltnis />
+        <Slider />
       </div>
     </div>
   );

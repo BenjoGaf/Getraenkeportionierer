@@ -17,21 +17,6 @@ const Slider = () => {
     useState(false);
   const [confDrinkMessage, setConfDrinkMessage] = useState("");
 
-  // const preConfiguredDrinks = [
-  //   {
-  //     drinkName: "Bacardi Cola",
-  //     drinks: ["Cola", "Bacardi"],
-  //   },
-  //   {
-  //     drinkName: "Spezi",
-  //     drinks: ["Cola", "Fanta"],
-  //   },
-  //   {
-  //     drinkName: "Vodka Orange",
-  //     drinks: ["Vodka", "Orangensaft"],
-  //   },
-  // ];
-
   useEffect(() => {
     fetchDrinks();
   }, []);
@@ -90,7 +75,7 @@ const Slider = () => {
     if (pumpSelectedDrink1 !== 0 && pumpSelectedDrink2 === 0) {
       console.log("inIf1");
       if (valueRightNow === 100) {
-        let mixRatio = "100," + pumpSelectedDrink1 + ",0";
+        let mixRatio = "1," + pumpSelectedDrink1 + ",0";
         sendToServer(mixRatio);
       } else errorMixingDrink("Getränk2 nicht ausgewählt");
     }
@@ -99,7 +84,7 @@ const Slider = () => {
     if (pumpSelectedDrink1 === 0 && pumpSelectedDrink2 !== 0) {
       console.log("inIf2");
       if (valueRightNow === 0) {
-        let mixRatio = "100," + pumpSelectedDrink2 + ",0";
+        let mixRatio = "1," + pumpSelectedDrink2 + ",0";
         sendToServer(mixRatio);
       } else errorMixingDrink("Getränk1 nicht ausgewählt");
     }
@@ -108,7 +93,11 @@ const Slider = () => {
     if (pumpSelectedDrink1 !== 0 && pumpSelectedDrink2 !== 0) {
       console.log("inIf3");
       let mixRatio =
-        valueRightNow + "," + pumpSelectedDrink1 + "," + pumpSelectedDrink2;
+        valueRightNow / 100 +
+        "," +
+        pumpSelectedDrink1 +
+        "," +
+        pumpSelectedDrink2;
       sendToServer(mixRatio);
     }
   };
