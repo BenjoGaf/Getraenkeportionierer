@@ -1,4 +1,4 @@
-import Clean from "@/components/Clean";
+import Clean from "@/components/Settings";
 import Mixdrink from "@/components/Mixdrink";
 
 export default function Home() {

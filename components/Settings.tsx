@@ -27,16 +27,16 @@ const Clean = () => {
   return (
     <div className="flex flex-col flex-auto md:mx-5 lg:w-1/3 xl:p-10 p-2 border-neutral-600 border-2 rounded-md">
       <div className="flex justify-center py-4 mb-4">
-        <h1 className="lg:text-3xl text-2xl">Automat reinigen</h1>
+        <h1 className="lg:text-3xl text-2xl">Automat einstellen</h1>
       </div>
       <hr className="h-px mb-6 bg-neutral-600 border-0 dark:bg-gray-700"></hr>
       <div className="flex flex-col w-full">
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full h-28">
           <div className="flex flex-row justify-between xl:p-5">
             <div className="flex flex-col">
               <Button
                 variant="outline"
-                className="w-48"
+                className="w-48 mb-4"
                 onClick={() => {
                   setCheckboxesVisible(!checkboxesVisible);
                 }}
