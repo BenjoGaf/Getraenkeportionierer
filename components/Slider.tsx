@@ -242,21 +242,34 @@ const Slider = () => {
         )}
       </div>
 
-      <div className="flex flex-row p-10">
-        {["Spezi", "BacardiCola", "VodkaOrange", "GinTonic", "Spritzer"].map(
-          (preDrink, index) => (
-            <Button
-              key={index}
-              variant="outline"
-              onClick={() => buttonPressed(index + 1)}
-              className="m-2"
-            >
-              {preDrink}
-            </Button>
-          )
-        )}
+      <div className="flex flex-row p-10 pb-0">
+        <div className="flex flex-col">
+          <p className="m-2">Inspiration?</p>
+          <div className="flex flex-wrap">
+            {[
+              "Spezi",
+              "BacardiCola",
+              "VodkaOrange",
+              "GinTonic",
+              "Spritzer",
+            ].map((preDrink, index) => (
+              <Button
+                key={index}
+                variant="outline"
+                onClick={() => buttonPressed(index + 1)}
+                className="m-2"
+              >
+                {preDrink}
+              </Button>
+            ))}
+          </div>
+        </div>
 
-        <Button variant="outline" onClick={sendMixdrinks} className="mt-2">
+        <Button
+          variant="outline"
+          onClick={sendMixdrinks}
+          className="mt-12 ml-8"
+        >
           Mischen
         </Button>
       </div>
