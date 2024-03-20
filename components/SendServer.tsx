@@ -6,6 +6,13 @@ const pythonScriptPathRaspi =
 
 // Argumente für das Python-Skript
 
+let stop = false;
+
+export async function sentStop() {
+  stop = true;
+}
+
+
 export async function sendToServer(valueToSend: string) {
   const pythonScriptPathWin = ["components/serverCom.py", valueToSend];
   console.log(valueToSend);
