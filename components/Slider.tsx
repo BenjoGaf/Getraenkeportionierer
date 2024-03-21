@@ -16,6 +16,9 @@ const Slider = () => {
   const [showConfiguredDrinksMessage, setShowConfiguredDrinksMessage] =
     useState(false);
   const [confDrinkMessage, setConfDrinkMessage] = useState("");
+  const [showStopButton, setShowStopButton] = useState(false);
+  const [showMixingMessage, setShowMixingMessage] = useState(false);
+  const [mixingMessage, setMixingMessage] = useState("");
 
   useEffect(() => {
     fetchDrinks();
@@ -43,6 +46,30 @@ const Slider = () => {
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSliderValue(parseInt(e.target.value, 10));
+  };
+
+  const giveParamsToServer = async (mixRatio) => {
+    setMixingMessage("Getränk wird gemischt ...");
+    setShowMixingMessage(true);
+    setShowStopButton(true);
+    sendToServer(mixRatio).then((answer) => {
+      console.log(answer);
+      if (answer === "isMixing") {
+        console.log(answer);
+        setMixingMessage("Mischt bereits, bitte warten ...");
+        setShowStopButton(false);
+        setTimeout(() => {
+          setShowMixingMessage(false);
+        }, 3000);
+      } else if (answer === "finished") {
+        console.log(answer);
+        setShowStopButton(false);
+        setMixingMessage("Getränk wurde gemischt!");
+        setTimeout(() => {
+          setShowMixingMessage(false);
+        }, 3000);
+      }
+    });
   };
 
   const sendMixdrinks = () => {
@@ -76,7 +103,7 @@ const Slider = () => {
       console.log("inIf1");
       if (valueRightNow === 100) {
         let mixRatio = "1," + pumpSelectedDrink1 + ",0";
-        sendToServer(mixRatio);
+        giveParamsToServer(mixRatio);
       } else errorMixingDrink("Getränk2 nicht ausgewählt");
     }
 
@@ -85,7 +112,7 @@ const Slider = () => {
       console.log("inIf2");
       if (valueRightNow === 0) {
         let mixRatio = "1," + pumpSelectedDrink2 + ",0";
-        sendToServer(mixRatio);
+        giveParamsToServer(mixRatio);
       } else errorMixingDrink("Getränk1 nicht ausgewählt");
     }
 
@@ -98,7 +125,7 @@ const Slider = () => {
         pumpSelectedDrink1 +
         "," +
         pumpSelectedDrink2;
-      sendToServer(mixRatio);
+      giveParamsToServer(mixRatio);
     }
   };
 
@@ -265,13 +292,25 @@ const Slider = () => {
           </div>
         </div>
 
-        <Button
-          variant="outline"
-          onClick={sendMixdrinks}
-          className="mt-12 ml-8"
-        >
-          Mischen
-        </Button>
+        <div className="flex flex-col">
+          <Button
+            variant="outline"
+            onClick={sendMixdrinks}
+            className="mt-12 ml-8"
+          >
+            Mischen
+          </Button>
+          {showMixingMessage && <p>{mixingMessage}</p>}
+          {showStopButton && (
+            <Button
+              variant="outline"
+              onClick={sendMixdrinks}
+              className="mt-12 ml-8"
+            >
+              abbrechen
+            </Button>
+          )}
+        </div>
       </div>
       {showConfiguredDrinksMessage && (
         <div className="text-red-500">
