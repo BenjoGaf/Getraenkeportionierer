@@ -1,49 +1,71 @@
 "use server";
 
+import { resolve } from "path";
+
 // Pfad zum Python-Skript
 const pythonScriptPathRaspi =
   "/home/benja/Documents/diplo/Getraenkeportionierer/components/serverCom.py";
 
-// Argumente für das Python-Skript
-
-let stop = false;
-
-export async function sentStop() {
-  stop = true;
-}
-
 let isMixing = false;
 
-export async function sendToServer(valueToSend: string) {
-  if (isMixing === true) {
-    console.log("Mixing");
-    return "isMixing";
-  } else if (isMixing === false) {
-    isMixing = true;
-    const pythonScriptPathWin = ["components/serverCom.py", valueToSend];
-    console.log(valueToSend);
+const { spawn } = require("child_process");
 
-    const { spawn } = require("child_process");
+async function mix(valueToSend: string) {
+  isMixing = true;
 
-    const talkToArduino = spawn("python", pythonScriptPathWin);
-    talkToArduino.stdout.on("data", function (data) {
-      // Coerce Buffer object to Float
-      let answer = String(data);
+  const pythonScriptPathWin = ["components/serverCom.py", valueToSend];
 
-      // Log to debug
-      console.log(answer);
-      console.log("finished");
+  const talkToArduino = spawn("python", pythonScriptPathWin);
+
+  // talkToArduino.stdin.write(valueToSend);
+  // talkToArduino.stdin.end();
+
+  // if (valueToSend === "cancel") {
+  //   talkToArduino.stdin.write("cancel");
+  // }
+
+  // talkToArduino.stdout.on("data", function (data) {
+  //   // Coerce Buffer object to String
+  //   console.log(String(data));
+  //   isMixing = false;
+  //   // resolve("finished");
+  // });
+
+  talkToArduino.stdout.on("data", function (data) {
+    // Coerce Buffer object to String
+    console.log(String(data));
+    if (data === "cancel") {
+      resolve("finished");
       isMixing = false;
-      return "finished";
-    });
+    }
+  });
 
-    talkToArduino.stderr.on("data", (data: string) => {
-      console.error(`stderr: ${data}`);
-    });
-  }
+  talkToArduino.on("close", (code: Error | null) => {
+    console.log(`Python-Prozess wurde mit dem Code ${code} beendet`);
+  });
 
-  /*
+  // log to debug
+  talkToArduino.stderr.on("data", (data: string) => {
+    console.error(`stderr: ${data}`);
+  });
+  console.log("fettig");
+  isMixing = false;
+}
+
+export async function sendServer(valueToSend: string) {
+  if (isMixing === true) return "isMixing";
+  await mix(valueToSend);
+
+  return "finished";
+
+  // let bla = await checkMixing(valueToSend);
+  // setTimeout(() => {
+  //   isMixing = false;
+  // }, 200);
+  // return bla;
+}
+
+/*
   pythonProcess.on('close', (code: Error | null) => {
     console.log(`Python-Prozess wurde mit dem Code ${code} beendet`);
   }); */
-}

@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { sendToServer } from "@/components/SendServer";
+import { sendServer } from "@/components/SendServer";
 import SelectDrinkDropDownMenu from "./SelectDrinkDropDownMenu";
 import { returnAllDrinks, returnSelectableDrinks } from "./dataBaseFunctions";
+import { GET } from "@/app/api/sendMixToServer/route";
 
 const Slider = () => {
   const [sliderValue, setSliderValue] = useState(50);
@@ -48,11 +49,16 @@ const Slider = () => {
     setSliderValue(parseInt(e.target.value, 10));
   };
 
+  const cancelMixing = () => {
+    fetch("/api/sendMixToServer?id=1");
+  };
+
   const giveParamsToServer = async (mixRatio) => {
     setMixingMessage("Getränk wird gemischt ...");
     setShowMixingMessage(true);
     setShowStopButton(true);
-    sendToServer(mixRatio).then((answer) => {
+
+    sendServer(mixRatio).then((answer) => {
       console.log(answer);
       if (answer === "isMixing") {
         console.log(answer);
@@ -61,8 +67,7 @@ const Slider = () => {
         setTimeout(() => {
           setShowMixingMessage(false);
         }, 3000);
-      } else if (answer === "finished") {
-        console.log(answer);
+      } else {
         setShowStopButton(false);
         setMixingMessage("Getränk wurde gemischt!");
         setTimeout(() => {
@@ -301,15 +306,15 @@ const Slider = () => {
             Mischen
           </Button>
           {showMixingMessage && <p>{mixingMessage}</p>}
-          {showStopButton && (
+          {
             <Button
               variant="outline"
-              onClick={sendMixdrinks}
+              onClick={cancelMixing}
               className="mt-12 ml-8"
             >
               abbrechen
             </Button>
-          )}
+          }
         </div>
       </div>
       {showConfiguredDrinksMessage && (
