@@ -50,7 +50,9 @@ const Slider = () => {
   };
 
   const cancelMixing = () => {
-    fetch("/api/sendMixToServer?id=1");
+    fetch("/api/sendMixToServer?id=0.5,3,4").then((response) => {
+      console.log(response);
+    });
   };
 
   const giveParamsToServer = async (mixRatio) => {

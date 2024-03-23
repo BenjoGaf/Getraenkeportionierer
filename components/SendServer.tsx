@@ -33,9 +33,9 @@ async function mix(valueToSend: string) {
 
   talkToArduino.stdout.on("data", function (data) {
     // Coerce Buffer object to String
-    console.log(String(data));
-    if (data === "cancel") {
-      resolve("finished");
+    data = String(data);
+    if (data == "cancel") {
+      console.log("isyeahmhmhmmmmmmmh");
       isMixing = false;
     }
   });

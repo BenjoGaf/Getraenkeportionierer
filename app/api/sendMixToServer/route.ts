@@ -3,55 +3,102 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
 
-  const pythonScriptPathRaspi =
-    "/home/benja/Documents/diplo/Getraenkeportionierer/components/serverCom.py";
-
-  const { spawn } = require("child_process");
-
-  let isMixing = true;
-
   console.log(id);
-  console.log(checkInstance());
+  console.log(isMixing);
 
-  const pythonScriptPathWin = ["components/serverCom.py", id];
-
-  const talkToArduino = spawn("python", pythonScriptPathWin);
-
-  // talkToArduino.stdin.write(valueToSend);
-  // talkToArduino.stdin.end();
-
-  // if (valueToSend === "cancel") {
-  //   talkToArduino.stdin.write("cancel");
+  // check if already mixing
+  let cnt = 0;
+  // if (isMixing === true) {
+  //   mixingResult = "nothing";
+  //   console.log("isMixing")
+  //   return Response.json("h");
+  // } 
+  // else {
   // }
 
-  // talkToArduino.stdout.on("data", function (data) {
-  //   // Coerce Buffer object to String
-  //   console.log(String(data));
-  //   isMixing = false;
-  //   // resolve("finished");
-  // });
+  if (isMixing === true) {
 
-  talkToArduino.stdout.on("data", function (data) {
+    // kill of running python
+    console.log('kill');
+    talkToArduino.stdin.pause();
+    talkToArduino.kill();
+
+    
+    // connect to "cancel" script
+    const { spawn } = require("child_process")
+    const pythonScriptPathWin = ["components/cancelCom.py"];
+    talkToArduino = spawn("python", pythonScriptPathWin)
+
+    talkToArduino.stdout.on("data", function (data) {
+      // Coerce Buffer object to String
+      console.log(String(data))
+      talkToArduino = null;
+    });
+
+    talkToArduino.stderr.on("data", (data: string) => {
+      console.error(`stderr: ${data}`);
+    });
+  
+    talkToArduino.on("close", (code: Error | null) => {
+      console.log(`Python-Prozess wurde mit dem Code ${code} beendet`);
+    });
+
+    isMixing = false
+
+    return Response.json("abgebrochen")
+  }
+
+  // connect to python
+  const { spawn } = require("child_process")
+  const pythonScriptPathWin = ["components/serverCom.py", id];
+  talkToArduino = spawn("python", pythonScriptPathWin)
+
+  isMixing = true
+
+   talkToArduino.stdout.on("data", function (data) {
     // Coerce Buffer object to String
-    console.log(String(data));
+    console.log(String(data))
+    talkToArduino = null;
+    isMixing = false;
+  });
+
+  // while (mixingResult === "nothing" && shouldCancel === false && cnt < 50000) {
+  //   console.log("pending");
+  //   cnt++;
+  // }
+
+  
+
+
+
+  // log to debug
+  talkToArduino.stderr.on("data", (data: string) => {
+    console.error(`stderr: ${data}`);
   });
 
   talkToArduino.on("close", (code: Error | null) => {
     console.log(`Python-Prozess wurde mit dem Code ${code} beendet`);
   });
 
-  // log to debug
-  talkToArduino.stderr.on("data", (data: string) => {
-    console.error(`stderr: ${data}`);
-  });
-  console.log("fettig");
-  isMixing = false;
-  Response.json("Fertig");
+  console.log("fertig");
+  return Response.json("finito");
 }
 
-let cnt = 0;
-function checkInstance() {
-  cnt++;
-  if (cnt === 1) return true;
-  return false;
+
+
+function startSendNonInterval(talkToArduinoInFunc) {
+  console.log("isIn startSendNonInterval");
+  talkToArduinoInFunc.stdin.write("false");
+  talkToArduinoInFunc.stdin.end();
 }
+
+function cancelSendNonInterval(talkToArduinoInFunc) {
+  console.log("isIn cancelSendNonInterval")
+  talkToArduinoInFunc.stdin.write("true");
+  talkToArduinoInFunc.stdin.end();
+}
+
+
+let talkToArduino;
+
+let isMixing = false;
