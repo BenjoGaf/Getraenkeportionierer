@@ -33,7 +33,7 @@ export function InputWithButton() {
             id="inputDrink"
             value={inputValue}
             onChange={(event) => setInputValue(event.target.value)}
-            placeholder="Enter Drink"
+            placeholder="Getränk"
           />
           <Button variant="outline" type="submit">
             Hinzufügen
