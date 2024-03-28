@@ -33,7 +33,7 @@ export default function DeleteDropDownMenu({ allDrinks, fetchDrinks }) {
 
   return (
     <div className="flex flex-col w-1/2">
-      <div className="p-2">Getränk aus der Liste entfernen:</div>
+      <div className="p-2 text-xl">Getränk aus der Liste entfernen:</div>
       <div className="flex flex-row w-full">
         <div className="p-3 pr-20">
           <DropdownMenu>

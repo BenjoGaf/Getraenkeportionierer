@@ -1,4 +1,4 @@
-import Clean from "@/components/Settings";
+import Settings from "@/components/Settings";
 import Mixdrink from "@/components/Mixdrink";
 
 export default function Home() {
@@ -20,7 +20,7 @@ export default function Home() {
       {/* Inhalt */}
       <div className="flex md:flex-row w-full flex-col justify-between p-3 ">
         <Mixdrink />
-        <Clean />
+        <Settings />
       </div>
     </main>
   );

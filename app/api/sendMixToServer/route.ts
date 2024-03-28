@@ -12,93 +12,82 @@ export async function GET(request: Request) {
   //   mixingResult = "nothing";
   //   console.log("isMixing")
   //   return Response.json("h");
-  // } 
+  // }
   // else {
   // }
 
-  if (isMixing === true) {
-
-    // kill of running python
-    console.log('kill');
+  if (id === "checking") {
+    if (isMixing === "true") return Response.json("isStillMixing");
+    if (isMixing === "false") return Response.json("isFinished");
+    if (isMixing === "cancel") {
+      isMixing = "false";
+      return Response.json("cancelled");
+    }
+  } else if (id === "cancel") {
+    if (isMixing === "false") return Response.json("isntMixing");
+    console.log("kill");
     talkToArduino.stdin.pause();
     talkToArduino.kill();
 
-    
     // connect to "cancel" script
-    const { spawn } = require("child_process")
+    const { spawn } = require("child_process");
     const pythonScriptPathWin = ["components/cancelCom.py"];
-    talkToArduino = spawn("python", pythonScriptPathWin)
+    talkToArduino = spawn("python", pythonScriptPathWin);
 
     talkToArduino.stdout.on("data", function (data) {
       // Coerce Buffer object to String
-      console.log(String(data))
+      console.log(String(data));
       talkToArduino = null;
     });
 
     talkToArduino.stderr.on("data", (data: string) => {
       console.error(`stderr: ${data}`);
     });
-  
+
     talkToArduino.on("close", (code: Error | null) => {
       console.log(`Python-Prozess wurde mit dem Code ${code} beendet`);
     });
 
-    isMixing = false
+    isMixing = "cancel";
 
-    return Response.json("abgebrochen")
+    return Response.json("cancelled");
+  } else if (isMixing === "true") {
+    return Response.json("isMixing");
+  } else {
+    // connect to python
+    const { spawn } = require("child_process");
+    const pythonScriptPathWin = ["components/serverCom.py", id];
+    talkToArduino = spawn("python", pythonScriptPathWin);
+
+    isMixing = "true";
+
+    talkToArduino.stdout.on("data", function (data) {
+      // Coerce Buffer object to String
+      console.log(String(data));
+      talkToArduino = null;
+      isMixing = "false";
+    });
+
+    // while (mixingResult === "nothing" && shouldCancel === false && cnt < 50000) {
+    //   console.log("pending");
+    //   cnt++;
+    // }
+
+    // log to debug
+    talkToArduino.stderr.on("data", (data: string) => {
+      console.error(`stderr: ${data}`);
+    });
+
+    talkToArduino.on("close", (code: Error | null) => {
+      console.log(`Python-Prozess wurde mit dem Code ${code} beendet`);
+    });
+
+    cnt++;
+    console.log("fertig");
+    return Response.json("startedMixing");
   }
-
-  // connect to python
-  const { spawn } = require("child_process")
-  const pythonScriptPathWin = ["components/serverCom.py", id];
-  talkToArduino = spawn("python", pythonScriptPathWin)
-
-  isMixing = true
-
-   talkToArduino.stdout.on("data", function (data) {
-    // Coerce Buffer object to String
-    console.log(String(data))
-    talkToArduino = null;
-    isMixing = false;
-  });
-
-  // while (mixingResult === "nothing" && shouldCancel === false && cnt < 50000) {
-  //   console.log("pending");
-  //   cnt++;
-  // }
-
-  
-
-
-
-  // log to debug
-  talkToArduino.stderr.on("data", (data: string) => {
-    console.error(`stderr: ${data}`);
-  });
-
-  talkToArduino.on("close", (code: Error | null) => {
-    console.log(`Python-Prozess wurde mit dem Code ${code} beendet`);
-  });
-
-  console.log("fertig");
-  return Response.json("finito");
 }
-
-
-
-function startSendNonInterval(talkToArduinoInFunc) {
-  console.log("isIn startSendNonInterval");
-  talkToArduinoInFunc.stdin.write("false");
-  talkToArduinoInFunc.stdin.end();
-}
-
-function cancelSendNonInterval(talkToArduinoInFunc) {
-  console.log("isIn cancelSendNonInterval")
-  talkToArduinoInFunc.stdin.write("true");
-  talkToArduinoInFunc.stdin.end();
-}
-
 
 let talkToArduino;
 
-let isMixing = false;
+let isMixing = "false";

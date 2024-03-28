@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { sendServer } from "@/components/SendServer";
 import SelectDrinkDropDownMenu from "./SelectDrinkDropDownMenu";
-import { returnAllDrinks, returnSelectableDrinks } from "./dataBaseFunctions";
-import { GET } from "@/app/api/sendMixToServer/route";
+import { returnSelectableDrinks } from "./dataBaseFunctions";
+import { clearInterval } from "timers";
 
 const Slider = () => {
   const [sliderValue, setSliderValue] = useState(50);
@@ -20,6 +20,8 @@ const Slider = () => {
   const [showStopButton, setShowStopButton] = useState(false);
   const [showMixingMessage, setShowMixingMessage] = useState(false);
   const [mixingMessage, setMixingMessage] = useState("");
+
+  let isCancelled = false;
 
   useEffect(() => {
     fetchDrinks();
@@ -49,10 +51,37 @@ const Slider = () => {
     setSliderValue(parseInt(e.target.value, 10));
   };
 
-  const cancelMixing = () => {
-    fetch("/api/sendMixToServer?id=0.5,3,4").then((response) => {
-      console.log(response);
-    });
+  const cancelMixing = async () => {
+    isCancelled = true;
+    let response = await fetch("/api/sendMixToServer?id=cancel");
+    if (response.ok) {
+      console.log(await response.json());
+      setMixingMessage("Mischen abgebrochen...");
+      setShowStopButton(false);
+      setTimeout(() => {
+        setShowMixingMessage(false);
+      }, 3000);
+    }
+  };
+
+  const checkMixingTimeout = () => {
+    if (isCancelled === false) {
+      let checkMixingInterval = setTimeout(async () => {
+        let response = await fetch("/api/sendMixToServer?id=checking");
+        if (response.ok) {
+          let realResponse = await response.json();
+          if (realResponse === "isFinished") {
+            setShowStopButton(false);
+            setMixingMessage("Getränk wurde gemischt!");
+            setTimeout(() => {
+              setShowMixingMessage(false);
+            }, 3000);
+            return 0;
+          } else if (realResponse === "cancelled") return 0;
+          checkMixingTimeout();
+        }
+      }, 1000);
+    }
   };
 
   const giveParamsToServer = async (mixRatio) => {
@@ -60,23 +89,23 @@ const Slider = () => {
     setShowMixingMessage(true);
     setShowStopButton(true);
 
-    sendServer(mixRatio).then((answer) => {
-      console.log(answer);
-      if (answer === "isMixing") {
-        console.log(answer);
+    let response = await fetch(`/api/sendMixToServer?id=${mixRatio}`);
+    if (response.ok) {
+      let realResponse = await response.json();
+      if (realResponse === "startedMixing") {
+        setShowStopButton(true);
+        setMixingMessage("Getränk wird gemischt!");
+        isCancelled = false;
+      }
+      if (realResponse === "isMixing") {
         setMixingMessage("Mischt bereits, bitte warten ...");
         setShowStopButton(false);
         setTimeout(() => {
           setShowMixingMessage(false);
         }, 3000);
-      } else {
-        setShowStopButton(false);
-        setMixingMessage("Getränk wurde gemischt!");
-        setTimeout(() => {
-          setShowMixingMessage(false);
-        }, 3000);
       }
-    });
+    }
+    checkMixingTimeout();
   };
 
   const sendMixdrinks = () => {
@@ -249,7 +278,9 @@ const Slider = () => {
 
       <div className="flex flex-row w-full justify-around">
         <div className="flex flex-col align-middle justify-center ">
-          <span className="h-full text-center pl-4 pt-2">{sliderValue}%</span>
+          <span className="h-full text-center text-xl pl-4 pt-2">
+            {sliderValue}%
+          </span>
           <SelectDrinkDropDownMenu
             selectableDrinks={selectableDrinks}
             selectedDrink={selectedDrink1}
@@ -258,7 +289,7 @@ const Slider = () => {
         </div>
 
         <div className="flex flex-col align-middle justify-center ">
-          <span className="h-full text-center pl-4 pt-2">
+          <span className="h-full text-center text-xl pl-4 pt-2">
             {100 - sliderValue}%
           </span>
           <SelectDrinkDropDownMenu
@@ -268,17 +299,13 @@ const Slider = () => {
           />
         </div>
       </div>
-      <div className="h-20 p-8 ml-4">
-        {showErrorMessage && (
-          <div className="text-red-500">
-            <p>{errorMessage}</p>
-          </div>
-        )}
+      <div className="flex h-10 p-2 w-full text-red-500 justify-center">
+        {showErrorMessage && <p className="w-52">{errorMessage}</p>}
       </div>
 
-      <div className="flex flex-row p-10 pb-0">
+      <div className="flex flex-row px-10 pb-0">
         <div className="flex flex-col">
-          <p className="m-2">Inspiration?</p>
+          <p className="m-2 text-xl">Inspiration?</p>
           <div className="flex flex-wrap">
             {[
               "Spezi",
@@ -289,6 +316,7 @@ const Slider = () => {
             ].map((preDrink, index) => (
               <Button
                 key={index}
+                size="lg"
                 variant="outline"
                 onClick={() => buttonPressed(index + 1)}
                 className="m-2"
@@ -301,27 +329,29 @@ const Slider = () => {
 
         <div className="flex flex-col">
           <Button
+            size="lg"
             variant="outline"
             onClick={sendMixdrinks}
             className="mt-12 ml-8"
           >
             Mischen
           </Button>
-          {showMixingMessage && <p>{mixingMessage}</p>}
-          {
+          {showMixingMessage && <p className="px-8">{mixingMessage}</p>}
+          {showStopButton && (
             <Button
-              variant="outline"
+              size="lg"
+              variant="destructive"
               onClick={cancelMixing}
               className="mt-12 ml-8"
             >
               abbrechen
             </Button>
-          }
+          )}
         </div>
       </div>
       {showConfiguredDrinksMessage && (
         <div className="text-red-500">
-          <p>{confDrinkMessage}</p>
+          <p className="p-4">{confDrinkMessage}</p>
         </div>
       )}
     </div>
