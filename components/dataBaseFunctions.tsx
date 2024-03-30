@@ -40,14 +40,14 @@ export async function returnSelectableDrinks() {
 
 export async function updatePumpe(nameToUpdate, pumpeToUpdate) {
   try {
-    // delete Pumpe bei Drink vorher
+    // Pumpe löschen bei Drink vorher
     const pumpDelete = await Drink.find({ pumpe: pumpeToUpdate });
     if (pumpDelete.length >= 1) {
       pumpDelete[0].pumpe = 0;
       await pumpDelete[0].save();
     }
 
-    // add Pumpe bei Drink jetzt
+    // Pumpe hinzufügen bei Drink jetzt
     const drink = await Drink.find({ drinkName: nameToUpdate });
     drink[0].pumpe = pumpeToUpdate;
     await drink[0].save();
