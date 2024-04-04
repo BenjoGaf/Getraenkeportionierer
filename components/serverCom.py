@@ -5,7 +5,7 @@ import time
 arguments = sys.argv[1]
 
 
-ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 time.sleep(1)
 isMixing = True
 getInfo = "nothing"
