@@ -265,20 +265,20 @@ const Slider = () => {
           onChange={handleSliderChange}
           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
         />
-        <span className="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">
+        <span className="text-md text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">
           0%
         </span>
-        <span className="text-sm text-gray-500 dark:text-gray-400 absolute start-1/2 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">
+        <span className="text-md text-gray-500 dark:text-gray-400 absolute start-1/2 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">
           50%
         </span>
-        <span className="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">
+        <span className="text-md text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">
           100%
         </span>
       </div>
 
       <div className="flex flex-row w-full justify-around">
         <div className="flex flex-col align-middle justify-center ">
-          <span className="h-full text-center text-xl pl-4 pt-2">
+          <span className="h-full text-center text-2xl pl-4 pt-2">
             {sliderValue}%
           </span>
           <SelectDrinkDropDownMenu
@@ -289,7 +289,7 @@ const Slider = () => {
         </div>
 
         <div className="flex flex-col align-middle justify-center ">
-          <span className="h-full text-center text-xl pl-4 pt-2">
+          <span className="h-full text-center text-2xl pl-4 pt-2">
             {100 - sliderValue}%
           </span>
           <SelectDrinkDropDownMenu
@@ -305,7 +305,7 @@ const Slider = () => {
 
       <div className="flex flex-row px-10 pb-0">
         <div className="flex flex-col">
-          <p className="m-2 text-xl">Inspiration?</p>
+          <p className="m-2 text-3xl">Inspiration?</p>
           <div className="flex flex-wrap">
             {[
               "Spezi",

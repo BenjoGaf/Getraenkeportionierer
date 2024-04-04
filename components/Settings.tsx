@@ -35,6 +35,7 @@ const Settings = () => {
             <div className="flex flex-col">
               <Button
                 variant="outline"
+                size="lg"
                 className="w-48 mb-4"
                 onClick={() => {
                   setCheckboxesVisible(!checkboxesVisible);
@@ -47,6 +48,7 @@ const Settings = () => {
                   {[1, 2, 3, 4, 5].map((index) => (
                     <ToggleGroupItem
                       key={index}
+                      size="lg"
                       value={`${index}`}
                       aria-label="Toggle bold"
                       className="border-solid border-gray-300 border"
@@ -59,6 +61,7 @@ const Settings = () => {
             </div>
             <Button
               variant="outline"
+              size="lg"
               onClick={() => {
                 checkBoxesValue === undefined
                   ? setErrorPumpNotSelected(!errorPumpNotSelected)
@@ -73,7 +76,11 @@ const Settings = () => {
         <div className="flex flex-col w-full p-5">
           <InputWithButton />
           <div className="pt-14">
-            <Button variant="outline" onClick={() => router.push("/getraenke")}>
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => router.push("/getraenke")}
+            >
               Pumpen konfigurieren
             </Button>
           </div>

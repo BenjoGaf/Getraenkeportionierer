@@ -35,7 +35,7 @@ export function InputWithButton() {
             onChange={(event) => setInputValue(event.target.value)}
             placeholder="Getränk"
           />
-          <Button variant="outline" type="submit">
+          <Button variant="outline" size="lg" type="submit">
             Hinzufügen
           </Button>
         </div>
