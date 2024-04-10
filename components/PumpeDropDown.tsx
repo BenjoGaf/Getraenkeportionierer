@@ -34,12 +34,14 @@ export default function DropdownMenuRadioGroupDemo({
   }, [allDrinks]);
 
   return (
-    <div className="flex flex-col p-3 w-36 justify-center">
-      <div className="p-2 text-xl">Pumpe {pumpenZahl}:</div>
+    <div className="flex flex-col p-3 w-40 justify-center">
+      <div className="p-2 text-2xl">Pumpe {pumpenZahl}:</div>
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">{selectedDrink}</Button>
+            <Button variant="outline" size="lg">
+              {selectedDrink}
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>Select Drink</DropdownMenuLabel>

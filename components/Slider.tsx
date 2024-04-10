@@ -20,6 +20,7 @@ const Slider = () => {
   const [showStopButton, setShowStopButton] = useState(false);
   const [showMixingMessage, setShowMixingMessage] = useState(false);
   const [mixingMessage, setMixingMessage] = useState("");
+  const [isMixing, setIsMixing] = useState(false);
 
   let isCancelled = false;
 
@@ -53,6 +54,7 @@ const Slider = () => {
 
   const cancelMixing = async () => {
     isCancelled = true;
+    setIsMixing(false);
     let response = await fetch("/api/sendMixToServer?id=cancel");
     if (response.ok) {
       console.log(await response.json());
@@ -72,6 +74,7 @@ const Slider = () => {
           let realResponse = await response.json();
           if (realResponse === "isFinished") {
             setShowStopButton(false);
+            setIsMixing(false);
             setMixingMessage("Getränk wurde gemischt!");
             setTimeout(() => {
               setShowMixingMessage(false);
@@ -85,6 +88,9 @@ const Slider = () => {
   };
 
   const giveParamsToServer = async (mixRatio) => {
+    console.log(isMixing);
+    if (isMixing === true) return 0;
+    setIsMixing(true);
     setMixingMessage("Getränk wird gemischt ...");
     setShowMixingMessage(true);
     setShowStopButton(true);
@@ -168,38 +174,20 @@ const Slider = () => {
   const buttonPressed = (index) => {
     switch (index) {
       case 1: {
-        let drink1 = "Cola";
-        let drink2 = "Fanta";
+        let drink1 = "Wasser";
         let isAvailable = 0;
         selectableDrinks.map((drink) => {
           if (drink.drinkName === drink1) isAvailable++;
-          if (drink.drinkName === drink2) isAvailable++;
         });
-        if (isAvailable === 2) {
+        if (isAvailable === 1) {
           setSelectedDrink1(drink1);
-          setSelectedDrink2(drink2);
-          setSliderValue(50);
+          setSelectedDrink2("nothing");
+          setSliderValue(100);
         } else configuredMessage("Getränke sind nicht im Automat");
         break;
       }
 
       case 2: {
-        let drink1 = "Bacardi";
-        let drink2 = "Cola";
-        let isAvailable = 0;
-        selectableDrinks.map((drink) => {
-          if (drink.drinkName === drink1) isAvailable++;
-          if (drink.drinkName === drink2) isAvailable++;
-        });
-        if (isAvailable === 2) {
-          setSelectedDrink1(drink1);
-          setSelectedDrink2(drink2);
-          setSliderValue(30);
-        } else configuredMessage("Getränke sind nicht im Automat");
-        break;
-      }
-
-      case 3: {
         let drink1 = "Vodka";
         let drink2 = "Orangensaft";
         let isAvailable = 0;
@@ -215,9 +203,9 @@ const Slider = () => {
         break;
       }
 
-      case 4: {
-        let drink1 = "Gin";
-        let drink2 = "Tonic";
+      case 3: {
+        let drink1 = "Vodka";
+        let drink2 = "Apfelsaft";
         let isAvailable = 0;
         selectableDrinks.map((drink) => {
           if (drink.drinkName === drink1) isAvailable++;
@@ -231,7 +219,7 @@ const Slider = () => {
         break;
       }
 
-      case 5: {
+      case 4: {
         let drink1 = "Wein";
         let drink2 = "Wasser";
         let isAvailable = 0;
@@ -242,7 +230,7 @@ const Slider = () => {
         if (isAvailable === 2) {
           setSelectedDrink1(drink1);
           setSelectedDrink2(drink2);
-          setSliderValue(50);
+          setSliderValue(40);
         } else configuredMessage("Getränke sind nicht im Automat");
         break;
       }
@@ -303,40 +291,38 @@ const Slider = () => {
         {showErrorMessage && <p className="w-52">{errorMessage}</p>}
       </div>
 
-      <div className="flex flex-row px-10 pb-0">
+      <div className="flex flex-row px-4 pb-0">
         <div className="flex flex-col">
-          <p className="m-2 text-3xl">Inspiration?</p>
+          <p className="m-2 text-3xl">Einfalls-elixier?</p>
           <div className="flex flex-wrap">
-            {[
-              "Spezi",
-              "BacardiCola",
-              "VodkaOrange",
-              "GinTonic",
-              "Spritzer",
-            ].map((preDrink, index) => (
-              <Button
-                key={index}
-                size="lg"
-                variant="outline"
-                onClick={() => buttonPressed(index + 1)}
-                className="m-2"
-              >
-                {preDrink}
-              </Button>
-            ))}
+            {["Wasser", "VodkaOrange", "VodkaApfel", "Spritzer"].map(
+              (preDrink, index) => (
+                <Button
+                  key={index}
+                  size="lg"
+                  variant="outline"
+                  onClick={() => buttonPressed(index + 1)}
+                  className="m-2"
+                >
+                  {preDrink}
+                </Button>
+              )
+            )}
           </div>
         </div>
 
         <div className="flex flex-col">
           <Button
             size="lg"
-            variant="outline"
+            variant="secondary"
             onClick={sendMixdrinks}
-            className="mt-12 ml-8"
+            className="mt-12 md:ml-6 ml-2"
           >
             Mischen
           </Button>
-          {showMixingMessage && <p className="px-8">{mixingMessage}</p>}
+          {showMixingMessage && (
+            <p className="px-8 text-2xl">{mixingMessage}</p>
+          )}
           {showStopButton && (
             <Button
               size="lg"
@@ -351,7 +337,7 @@ const Slider = () => {
       </div>
       {showConfiguredDrinksMessage && (
         <div className="text-red-500">
-          <p className="p-4">{confDrinkMessage}</p>
+          <p className="p-4  text-2xl">{confDrinkMessage}</p>
         </div>
       )}
     </div>

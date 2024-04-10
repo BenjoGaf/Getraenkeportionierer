@@ -33,12 +33,14 @@ export default function DeleteDropDownMenu({ allDrinks, fetchDrinks }) {
 
   return (
     <div className="flex flex-col w-1/2">
-      <div className="p-2 text-xl">Getränk aus der Liste entfernen:</div>
+      <div className="p-2 text-3xl">Getränk aus der Liste entfernen:</div>
       <div className="flex flex-row w-full">
         <div className="p-3 pr-20">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">{selectedDrink}</Button>
+              <Button variant="outline" size="lg">
+                {selectedDrink}
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
               <DropdownMenuLabel>Getränk auswählen</DropdownMenuLabel>
@@ -57,7 +59,7 @@ export default function DeleteDropDownMenu({ allDrinks, fetchDrinks }) {
           </DropdownMenu>
         </div>
         <div className="p-3">
-          <Button variant="outline" onClick={() => deletePressed()}>
+          <Button variant="outline" size="lg" onClick={() => deletePressed()}>
             Getränk entfernen
           </Button>
         </div>

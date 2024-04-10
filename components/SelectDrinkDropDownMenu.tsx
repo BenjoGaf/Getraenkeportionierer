@@ -22,7 +22,9 @@ export default function SelectDrinkDropDownMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">{selectedDrink}</Button>
+        <Button variant="outline" size="lg">
+          {selectedDrink}
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Getränk auswählen</DropdownMenuLabel>

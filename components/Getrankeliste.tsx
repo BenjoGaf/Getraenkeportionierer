@@ -11,7 +11,7 @@ const Getrankeliste = ({ allDrinks }) => {
       </div>
       <div className="flex flex-col flex-wrap min-h-44 text-center">
         {allDrinks.map((drink, index) => (
-          <div className="p-2 text-xl" key={index}>
+          <div className="p-2 text-2xl" key={index}>
             {drink.drinkName}
           </div>
         ))}

@@ -9,7 +9,7 @@ export default function Home() {
         <div className="font-sans text-5xl pb-3 text-black text-center">
           Getränkeautomat
         </div>
-        <div className="font-sans text-m text-justify px-6">
+        <div className="font-sans text-xl text-justify px-6">
           eine Diplomarbeit von Elias Bieler, Benjamin Gangol und Alexander
           Kollar
         </div>
@@ -18,7 +18,7 @@ export default function Home() {
         </div>
       </div>
       {/* Inhalt */}
-      <div className="flex md:flex-row w-full flex-col justify-between p-3 ">
+      <div className="flex md:flex-row w-full flex-col justify-between p-3 min-w-full">
         <Mixdrink />
         <Settings />
       </div>
