@@ -100,7 +100,7 @@ const Slider = () => {
       let realResponse = await response.json();
       if (realResponse === "startedMixing") {
         setShowStopButton(true);
-        setMixingMessage("Getränk wird gemischt!");
+        setMixingMessage("Getränk wird gemischt ...");
         isCancelled = false;
       }
       if (realResponse === "isMixing") {

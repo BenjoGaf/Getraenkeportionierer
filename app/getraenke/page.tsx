@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import DropDownMenus from "@/components/PumpenDropDownMenus";
 import { Button } from "@/components/ui/button";
 import DeleteDropDownMenu from "@/components/DeleteDropDownMenu";
+import { InputWithButton } from "@/components/InputWithButton";
 
 export default function Home() {
   const [allDrinks, setAllDrinks] = useState([]);
@@ -31,13 +32,13 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col justify-around items-center justify-items-start p-12 h-screen">
+    <main className="flex min-h-screen flex-col  items-center justify-items-start p-12 h-screen">
       <div className="flex flex-row p-3">
         <div className="font-sans text-5xl pb-3 text-center">
           Automat bearbeiten
         </div>
         {/* Button zurück */}
-        <div className="pl-80">
+        <div className="md:pl-80 pt-8 pl-8">
           <Button variant="outline" size="lg" onClick={() => router.push("/")}>
             Zurück
           </Button>
@@ -45,7 +46,7 @@ export default function Home() {
       </div>
       {/* Inhalt */}
       <div className="flex flex-col w-full flex-wrap justify-between p-3 ">
-        <div className="flex flex-row p-5 justify-around">
+        <div className="flex md:flex-row p-5 md:justify-around flex-col">
           <DropDownMenus
             allDrinks={allDrinks}
             updatePumpenLocal={updatePumpen}
@@ -53,9 +54,12 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className="flex flex-row flex-wrap justify-around w-full px-32">
+      <div className="flex md:flex-row flex-col justify-around w-full md:px-32 ">
         <Getrankeliste allDrinks={allDrinks} />
-        <DeleteDropDownMenu allDrinks={allDrinks} fetchDrinks={fetchDrinks} />
+        <div className="flex flex-col md:w-1/2">
+          <InputWithButton />
+          <DeleteDropDownMenu allDrinks={allDrinks} fetchDrinks={fetchDrinks} />
+        </div>
       </div>
     </main>
   );

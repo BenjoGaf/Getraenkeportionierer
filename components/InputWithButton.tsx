@@ -20,34 +20,39 @@ export function InputWithButton() {
   };
 
   return (
-    <>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          addDrink(inputValue);
-        }}
-      >
-        <div className="flex flex-row w-full justify-between">
-          <Input
-            type="text"
-            id="inputDrink"
-            value={inputValue}
-            onChange={(event) => setInputValue(event.target.value)}
-            placeholder="Getränk"
-          />
-          <Button variant="outline" size="lg" type="submit">
-            Hinzufügen
-          </Button>
-        </div>
-      </form>
+    <div className="flex flex-col pt-10">
+      <p className="p-2 text-xl font-bold md:text-3xl">
+        Getränk der Liste hinzufügen:
+      </p>
       <div>
-        {showDrinkAddedText &&
-          (drinkAddedWorked === true ? (
-            <p>Getränk wurde hinzugefügt!</p>
-          ) : (
-            <p>Getränk existiert bereits!</p>
-          ))}
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            addDrink(inputValue);
+          }}
+        >
+          <div className="flex flex-row w-full justify-between">
+            <Input
+              type="text"
+              id="inputDrink"
+              value={inputValue}
+              onChange={(event) => setInputValue(event.target.value)}
+              placeholder="Getränk"
+            />
+            <Button variant="outline" size="lg" type="submit">
+              Hinzufügen
+            </Button>
+          </div>
+        </form>
+        <div>
+          {showDrinkAddedText &&
+            (drinkAddedWorked === true ? (
+              <p>Getränk wurde hinzugefügt!</p>
+            ) : (
+              <p>Getränk existiert bereits!</p>
+            ))}
+        </div>
       </div>
-    </>
+    </div>
   );
 }

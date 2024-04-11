@@ -32,10 +32,12 @@ export default function DeleteDropDownMenu({ allDrinks, fetchDrinks }) {
   };
 
   return (
-    <div className="flex flex-col w-1/2">
-      <div className="p-2 text-3xl">Getränk aus der Liste entfernen:</div>
+    <div className="flex flex-col py-14">
+      <div className="p-2 text-xl font-bold md:text-3xl">
+        Getränk aus der Liste entfernen:
+      </div>
       <div className="flex flex-row w-full">
-        <div className="p-3 pr-20">
+        <div className="p-3 md:pr-20">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="lg">

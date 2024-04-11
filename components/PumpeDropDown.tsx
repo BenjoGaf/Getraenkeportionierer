@@ -34,8 +34,8 @@ export default function DropdownMenuRadioGroupDemo({
   }, [allDrinks]);
 
   return (
-    <div className="flex flex-col p-3 w-40 justify-center">
-      <div className="p-2 text-2xl">Pumpe {pumpenZahl}:</div>
+    <div className="flex flex-col p-3 w-44 justify-center">
+      <div className="p-2 text-xl md:text-3xl">Pumpe {pumpenZahl}:</div>
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

@@ -33,7 +33,7 @@ const Settings = () => {
     let response = await fetch("/api/sendMixToServer?id=cancel");
     if (response.ok) {
       console.log(await response.json());
-      setMixingMessage("Reinigen abgebrochen...");
+      setMixingMessage("Reinigen abgebrochen ...");
       setShowStopButton(false);
       setTimeout(() => {
         setShowMixingMessage(false);
@@ -50,7 +50,7 @@ const Settings = () => {
           if (realResponse === "isFinished") {
             setShowStopButton(false);
             setIsMixing(false);
-            setMixingMessage("Pumpe wurde gereinigt!");
+            setMixingMessage("Pumpe wurde gereinigt ...");
             setTimeout(() => {
               setShowMixingMessage(false);
             }, 3000);
@@ -160,17 +160,14 @@ const Settings = () => {
           )}
         </div>
         <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-        <div className="flex flex-col w-full p-5">
-          <InputWithButton />
-          <div className="pt-14">
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => router.push("/getraenke")}
-            >
-              Pumpen konfigurieren
-            </Button>
-          </div>
+        <div className="flex pt-14 p-5 w-full">
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => router.push("/getraenke")}
+          >
+            Pumpen konfigurieren
+          </Button>
         </div>
       </div>
     </div>
